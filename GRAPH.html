@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>MATHG</title>
+  <script src="js/plotly-latest.min.js"></script>
+  <script src="js/algebra-0.2.6.min.js"></script>
+  <script src="js/nerdamer.core.js"></script>
+  <script src="js/Algebra.js"></script>
+  <script src="js/Calculus.js"></script>
+  <script src="js/math.js"></script>
+  <script src="js/Solve.js"></script>
+  <script src="js/math-complex.min.js"></script>
+  <script src="js/latex-to-js.js"></script>
+  <script src="js/Graph.js"></script>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/graph.css" rel="stylesheet">
+  <style>
+    input[type=text] {
+      width: 300px;
+    }
+
+    input {
+      padding: 6px;
+    }
+
+    body,
+    html,
+    input {
+      font-family: sans-serif;
+      font-size: 11pt;
+      color: #000; 
+    }
+
+    form {
+      margin: 20px 0;
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+
+  <form id="form">
+    <label for="eq">Enter an equation:</label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="tst0" value="" style="width:30%" />
+    <input type="button" value="Submit" onclick="draw_initial()"><br><br>
+    <div id="dynamicCheck">
+      <input type="button" value="+" onclick="createNewElement()" />
+    </div>
+    <div id="new"></div>
+  </form>
+
+  <div id="plot"></div>
+  <script>
+    var x = 1
+    var expression2 = 0;
+    var expr2 = 0;
+    var input;
+    var equation;
+    var id = 0;
+    var id1 = 0;
+    var data = new Array();
+    function createNewElement() {
+      id++
+      input = document.createElement('div');
+      input.innerHTML = "<div> <label for='eq'>Enter an equation:</label><input type='text' id='tst" + id + "'><input type='button' value='Submit' onclick='draw_initial()'><br><br></div><br><br>";
+      document.getElementById("new").appendChild(input);
+
+    }
+
+
+    function ner(n1) {
+      //alert(n1+id)
+      if (n1.indexOf("y") > -1) {
+        var solutions = nerdamer.solveEquations(n1, 'y');
+        return (solutions.toString());
+      }
+      else {
+        return (n1)
+      }
+    }
+
+
+    //alert(toRadian(0.03))
+    function draw_initial(express) {
+      try {
+        var layout = axis()
+        const expression = document.getElementById("tst" + id).value
+        const expr = math.compile(expression)
+        var chart = document.getElementById("tst" + id).value;
+        var start = (chart.indexOf(')') - 1);
+        var string = chart.charAt(start);
+        if (express == 1) {
+          try {
+            const exp1 = document.getElementById('x'+id1).value
+            const e1 = math.compile(exp1);
+            const exp2 = document.getElementById('y'+id1).value
+            const e2 = math.compile(exp2);
+            const tValues1 = math.range(-500, 500, 0.01).toArray()
+            const xValues1 = tValues1.map(
+              function (x) {
+                return e1.evaluate({ t: x })
+              });
+            const tValues2 = math.range(-500, 500, 0.01).toArray()
+            const yValues2 = tValues2.map(
+              function (y) {
+                return e2.evaluate({ t: y })
+              });
+            data[id] = {
+              x: xValues1,
+              y: yValues2,
+              line: { shape: 'spline' },
+              name: "x = "+document.getElementById('x'+id1).value +"y = "+ document.getElementById('y'+id1).value
+            }
+            Plotly.newPlot('plot', data, layout, { scrollZoom: true })
+          }
+          catch (err) {
+            console.error(err)
+            alert(err)
+          }
+        }
+        else {
+          if (string == 't') {
+            try {
+              var theta = new Array();
+              var r = new Array();
+              theta = math.range(-180, 180, 1).toArray()
+              r = theta.map(
+                function (t) {
+                  return (expr.evaluate({ t: toDegree(t) }))
+                }
+              );
+              var xval = new Array();
+              var yval = new Array();
+              for (var i = 0; i < r.length; i++) {
+                xval.push(((r[i]) * Math.cos(toDegree(theta[i]))));
+                yval.push(((r[i]) * Math.sin(toDegree(theta[i]))))
+              }
+              data[id] = {
+                x: xval,
+                y: yval,
+                mode: 'lines',
+                line: { shape: 'spline' },
+                name: document.getElementById('tst' + id).value
+              };
+              Plotly.newPlot('plot', data, layout, { scrollZoom: true })
+            }
+            catch (err) {
+              console.error(err)
+              alert(err)
+            }
+          }
+          if(string != 't') {
+            var e1 = new Array()
+            var c, from, to = 0;
+            var sup = new Array();
+            e1 = ner(expression); alert(e1)
+            var c1 = e1.indexOf(',');
+            for (var i = 0; i <= e1.length; i++) {
+              if (e1[i] == ',') {
+                c++;
+                sup.push(e1.substring(from, i))
+                from = i + 1;
+              }
+            }
+            sup.push(e1.substring(from, e1.length))
+            var n = sup.length;
+            var A = new Array(n)
+
+            for (var i = 0; i < n; i++) {
+              //alert(sup[i])
+              A[i] = math.compile(sup[i]);
+            }
+            var xValues = math.range(-10, 10, 0.01).toArray();
+
+            function load_y(y) {
+              this.values = y
+            }
+            function load_x(x) {
+              this.values = x
+            }
+            var yvalues = new Array();
+            var xvalues = new Array();
+            var a;
+            for (var i = 0; i < n; i++) {
+              y = xValues.map(
+                function (x) {
+                  return (A[i].evaluate({ x, y: x }))
+                }
+              )
+              yvalues[i] = new load_y(y)
+              xvalues[i] = new load_x(xValues)
+            }
+
+            var X = xvalues[0].values
+            var Y = yvalues[0].values
+
+            X = X.concat(NaN);
+            Y = Y.concat(NaN);
+
+            for (var i = 1; i < n; i++) {
+              X = X.concat(xvalues[i].values)
+              Y = Y.concat(yvalues[i].values)
+              X = X.concat(NaN)
+              Y = Y.concat(NaN)
+            }
+            
+            var y = Y;
+
+            for (var i = 0; i < X.length; i++) {
+              if (typeof (y[i]) != 'object') {
+                y[i] = y[i].toFixed(3);
+                //console.log(y[i])
+              }
+              if (typeof (y[i]) == 'object') {
+                if (Math.round(y[i].im) == 0) {
+
+                  y[i] = y[i].re.toFixed(3);
+                }
+                if (Math.round(y[i].im) > 0 || Math.round(y[i].im) < 0) {
+                  y[i] = NaN;
+                }
+              }
+            }
+            
+            var l = y.length
+            for (var i = 0; i < l; i++) {
+              for (var j = i + 1; j < l - 1; j++) {
+                if (y[i] == y[j] && X[i] == X[j]) {
+                  y[j] = (y[j - 1] + y[j + 1]) / 2;
+                  y[i] = NaN
+                  console.log(y[i])
+                }
+              }
+            }
+
+            data[id] = {
+              x: X,
+              y: y,
+              type: "line",
+              line: { shape: 'spline' },
+              name: document.getElementById('tst'+id).value,
+            }
+
+            
+
+          }
+        }
+        Plotly.newPlot('plot', data, layout, { scrollZoom: true })
+      } 
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+    draw_initial(0);
+    document.getElementById('form').onsubmit = function (event) {
+      event.preventDefault()
+      draw_initial(0)
+    }
+  //alert(x*sup(2));
+  </script>
+</body>
+
+</html>
