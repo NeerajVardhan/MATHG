@@ -1,0 +1,389 @@
+#main{
+  background: rgb(255, 255, 255) url(2.jpg) 0 0 repeat-x;
+}
+input[type=text] {
+      width: 210px;
+      padding:3px;
+      color:'rgb(188, 255, 218)';
+    }
+  input {
+      padding: 12px 10px 0px 10px;
+    }
+    #head{
+      width:1354px;
+      height:60px;
+      background:rgb(0, 155, 167);
+      color: rgb(3, 3, 3);
+      font-family:Arial, Helvetica, sans-serif;
+      padding:8px;
+    }
+    body, html, input {
+      font-family: sans-serif;
+      font-size: 11pt;
+      background:rgb(243, 239, 239);  
+    }
+    form {
+      margin: 1px 0;
+      width:320px;
+      height:600px;
+      float:right;
+      padding:10px 0px 0px 40px ;
+      background:rgb(241, 238, 238);
+      color:rgb(8, 8, 6);
+    }
+    #form2 {
+      margin: 1px 0;
+      width:400px;
+      height:550px;
+      float:right;
+      padding:600px;
+      background:rgb(201, 201, 201);
+      color:rgb(8, 8, 6);
+    }
+   
+    #equation{
+      background:rgb(92, 91, 91);
+      width:260px;
+      height:60px;
+     margin:0 auto;
+    }
+    #frm{
+      width:300px;
+      height:619px;
+      background:rgb(141, 131, 118);
+      float:right;
+    }
+    .breadcrumb{
+      background:rgb(218, 223, 224);
+      padding:10px 0px 0px 468px;
+      height:60px;
+    }
+    .form-control mr-sm-3{
+      background:rgb(0, 0, 0);
+      float:center;
+    }
+    .btn btn-info{
+      float:right;
+    }
+    
+    #btn{
+      
+      padding:5px 11px 2px 10px;
+      size: 1cm;
+      color:rgb(26, 3, 3);
+    }
+    #h1{
+      float:center;
+      color:rgb(185, 144, 111);
+      margin:0 auto;
+      padding:200px 0px 0px 290px;
+      font-size: 4cm;
+      font-family: chilanka;
+    }
+    .plotlybars {
+      padding:0 10px;
+      vertical-align:bottom;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      position:relative;
+      box-sizing:border-box
+     }
+     .plotlybars-wrapper {
+      width:165px;
+      height:100px;
+      position:fixed;
+      top:50%;
+      left:40%;
+      transform:translate(-50%,-50%)
+     }
+     .plotlybars-text {
+      color:#447adb;
+      font-family:chilanka;
+      font-size:80%;
+      float:center;
+      margin-top:5px
+    
+     }
+     .plotlybars-bar {
+      background-color:#054652;
+      height:100%;
+      width:13.3%;
+      position:absolute;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0);
+      animation-duration:20s;
+      animation-iteration-count:infinite;
+      animation-direction:normal;
+      animation-timing-function:linear;
+      -webkit-animation-duration:3s;
+      -webkit-animation-iteration-count:infinite;
+      -webkit-animation-direction:normal;
+      -webkit-animation-timing-function:linear
+     }
+     .b1 {
+      left:0%;
+      top:88%;
+      animation-name:b1;
+      -webkit-animation-name:b1
+     }
+     .b2 {
+      left:14.3%;
+      top:76%;
+      animation-name:b2;
+      -webkit-animation-name:b2
+     }
+     .b3 {
+      left:28.6%;
+      top:16%;
+      animation-name:b3;
+      -webkit-animation-name:b3
+     }
+     .b4 {
+      left:42.9%;
+      top:40%;
+      animation-name:b4;
+      -webkit-animation-name:b4
+     }
+     .b5 {
+      left:57.2%;
+      top:26%;
+      animation-name:b5;
+      -webkit-animation-name:b5
+     }
+     .b6 {
+      left:71.5%;
+      top:67%;
+      animation-name:b6;
+      -webkit-animation-name:b6
+     }
+     .b7 {
+      left:85.8%;
+      top:89%;
+      animation-name:b7;
+      -webkit-animation-name:b7
+     }
+     @keyframes b1 {
+      0% {
+       top:88%
+      }
+      44% {
+       top:0%
+      }
+      94% {
+       top:100%
+      }
+      100% {
+       top:88%
+      }
+     }
+     @-webkit-keyframes b1 {
+      0% {
+       top:88%
+      }
+      44% {
+       top:0%
+      }
+      94% {
+       top:100%
+      }
+      100% {
+       top:88%
+      }
+     }
+     @keyframes b2 {
+      0% {
+       top:76%
+      }
+      38% {
+       top:0%
+      }
+      88% {
+       top:100%
+      }
+      100% {
+       top:76%
+      }
+     }
+     @-webkit-keyframes b2 {
+      0% {
+       top:76%
+      }
+      38% {
+       top:0%
+      }
+      88% {
+       top:100%
+      }
+      100% {
+       top:76%
+      }
+     }
+     @keyframes b3 {
+      0% {
+       top:16%
+      }
+      8% {
+       top:0%
+      }
+      58% {
+       top:100%
+      }
+      100% {
+       top:16%
+      }
+     }
+     @-webkit-keyframes b3 {
+      0% {
+       top:16%
+      }
+      8% {
+       top:0%
+      }
+      58% {
+       top:100%
+      }
+      100% {
+       top:16%
+      }
+     }
+     @keyframes b4 {
+      0% {
+       top:40%
+      }
+      20% {
+       top:0%
+      }
+      70% {
+       top:100%
+      }
+      100% {
+       top:40%
+      }
+     }
+     @-webkit-keyframes b4 {
+      0% {
+       top:40%
+      }
+      20% {
+       top:0%
+      }
+      70% {
+       top:100%
+      }
+      100% {
+       top:40%
+      }
+     }
+     @keyframes b5 {
+      0% {
+       top:26%
+      }
+      13% {
+       top:0%
+      }
+      63% {
+       top:100%
+      }
+      100% {
+       top:26%
+      }
+     }
+     @-webkit-keyframes b5 {
+      0% {
+       top:26%
+      }
+      13% {
+       top:0%
+      }
+      63% {
+       top:100%
+      }
+      100% {
+       top:26%
+      }
+     }
+     @keyframes b6 {
+      0% {
+       top:67%
+      }
+      33.5% {
+       top:0%
+      }
+      83% {
+       top:100%
+      }
+      100% {
+       top:67%
+      }
+     }
+     @-webkit-keyframes b6 {
+      0% {
+       top:67%
+      }
+      33.5% {
+       top:0%
+      }
+      83% {
+       top:100%
+      }
+      100% {
+       top:67%
+      }
+     }
+     @keyframes b7 {
+      0% {
+       top:89%
+      }
+      44.5% {
+       top:0%
+      }
+      94.5% {
+       top:100%
+      }
+      100% {
+       top:89%
+      }
+     }
+     @-webkit-keyframes b7 {
+      0% {
+       top:89%
+      }
+      44.5% {
+       top:0%
+      }
+      94.5% {
+       top:100%
+      }
+      100% {
+       top:89%
+      }
+     }
+     html {
+      font:.875em/1.5 sans-serif
+     }
+     body {
+      margin:0;
+      padding:0
+     }
+     .embed__edit-link {
+      display:none;
+      position:absolute;
+      bottom:8px;
+      right:8px;
+      opacity:0.6
+     }
+     .embed__edit-link:hover {
+      opacity:1
+     }
+     .embed__edit-link a {
+      border-radius:4px;
+      border:1px solid #406CDB;
+      color:#406CDB;
+      display:inline-block;
+      font-size:12px;
+      padding:4px 6px;
+      text-decoration:none;
+      text-transform:uppercase
+     }
+     

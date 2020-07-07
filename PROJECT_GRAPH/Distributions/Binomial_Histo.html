@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Binomial Distribution</title>
+  <script src="js/math.min.js"></script>
+  <script src="js/plotly-latest.min.js"></script>
+  <script src="js/Calculation.js"></script>
+  <style>
+    input[type=text] {
+      width: 300px;
+    }
+
+    input {
+      padding: 6px;
+    }
+
+    body,
+    html,
+    input {
+      font-family: sans-serif;
+      font-size: 11pt;
+
+    }
+
+    form {
+      margin: 20px 0;
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+
+  <form id="form">
+    <label>Enter the Parameters</label><br>
+    <label>n=&nbsp;&nbsp;</label>
+    <input type="text" id="n" /><br><br>
+    <label>p=&nbsp;&nbsp;</label>
+    <input type="text" id="p" /><br><br>
+    <label>x=&nbsp;&nbsp;</label>
+    <input type="text" id="x" /><br><br>
+    <label>x1=</label>
+    <input type="text" id="x1" /><br><br>
+    <label>x2=</label>
+    <input type="text" id="x2" /><br><br>
+    <input type="button" value="Submit" onclick="Binomial_Cal()" /><br><br>
+    <input type="button" value="Click Here for Graph of P(X<x)"
+      onclick="Binomial_Less(document.getElementById('x').value)" /><br><br>
+    <input type="button" value="Click Here for Graph of P(X>x)"
+      onclick="Binomial_More(document.getElementById('x').value)" /><br><br>
+    <input type="button" value="Click Here for Graph of P(X=x)"
+      onclick="Binomial_Equal(document.getElementById('x').value)" /><br><br>
+    <input type="button" value="Click Here for Graph of P(x1<X<x2)"
+      onclick="Binomial_Less_Or_Equal(document.getElementById('x1').value,document.getElementById('x2').value)" /><br><br>
+  </form>
+  <div id="myDiv"></div>
+  <script>
+    var arr;
+    var arr1;
+    var i;
+    var n1;
+    var Ar;
+    var Ar1;
+    var colour = ['red', 'blue', 'green', 'orange'];
+    function Binomial_Cal() {
+      var n = document.getElementById('n').value;
+      var p = document.getElementById('p').value;
+      var x = document.getElementById('x').value;
+      var x1 = document.getElementById('x1').value;
+      var x2 = document.getElementById('x2').value;
+      arr = new Array();
+      arr1 = new Array();
+      n1 = parseInt(document.getElementById('n').value);
+      i = 0;
+      for (var i = 0; i <= n1; i++) {
+        arr1.push(i);
+        arr.push(binomial(n1, p, i));
+      }
+      Binomial_Histo(3)
+      var ans = binomial(n1, p, x);
+      var ans1 = Binomial_XLx(n1, p, x);
+      var ans2 = Binomial_XGx(n1, p, x);
+      var ans3 = Binomial_XLEx(n1, p, x);
+      var ans4 = Binomial_XGEx(n1, p, x);
+      var ans5 = Binomial_x1Xx2(n1, p, x);
+
+      //document.write("<br><br>")
+      //document.write("P(X=",x,") =");document.write(ans,"<br><br>");
+      //document.write("P(X<",x,") =");document.write(ans1,"<br><br>"); 
+      //document.write("P(X>",x,") =");document.write(ans2,"<br><br>"); 
+      //document.write("P(X<=",x,") =");document.write(ans3,"<br><br>"); 
+      //document.write("P(X>=",x,") =");document.write(ans4,"<br><br>"); 
+      //document.write("P(",x1,"<=X<=",x2,") =");document.write(ans5,"<br>");
+    }
+
+    function axis(j, count, colour) {
+      var layout = {
+        xaxis: {
+          gridcolor: "rgb(100,100,100)",
+          title: "X-Axis",
+          range: [0, n],
+          type: 'linear',
+          showgrid: true,
+          showline: true,
+          showticklabels: true,
+          tickcolor: "red",
+          ticks: "outside",
+          zeroline: true,
+          zerolinecolor: '#969696',
+          zerolinewidth: 1,
+          linecolor: '#636363',
+          linewidth: 1
+        },
+        yaxis: {
+          gridcolor: "rgb(100,100,100)",
+          title: "Y-Axis",
+          type: 'linear',
+          showgrid: true,
+          showline: true,
+          showticklabels: true,
+          tickcolor: "red",
+          ticks: "outside",
+          zeroline: true,
+          zerolinecolor: '#969696',
+          zerolinewidth: 1,
+          linecolor: '#636363',
+          linewidth: 1
+
+        },
+        autosize: false, width: 700, height: 500,
+        margin: { l: 50, r: 50, b: 45, t: 15, pad: 0 },
+        shapes: [] = new Array(count),
+      };
+      layout.shapes.type = 'line';
+      var i = j;
+      count = parseInt(count);
+      for (i = j; i < count + 1; i++) {
+        layout.shapes[i] = {
+          x0: arr1[i],
+          y0: 0,
+          x1: arr1[i],
+          y1: arr[i],
+          line: {
+            color: colour
+          }
+        }
+      }
+
+      return (layout)
+    }
+
+    function Binomial_Histo(y) {
+      try {
+        var trace =
+        {
+          x: arr1,
+          y: arr,
+          mode: 'markers',
+          marker: {
+            color: colour[1],
+          },
+          line: { shape: 'spline' },
+        };
+        var data = [trace];
+        var layout = axis(0, n1, colour[1]);
+        Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+      }
+
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+
+    function Binomial_Less_Or_Equal(x1,x2){
+      try{
+        alert(typeof(x1))
+        Ar = new Array();
+        Ar1 = new Array();
+        for (var j = 0; j <= parseInt(x1) - 1; j++) {
+          Ar[j] = arr1[j];
+          Ar1[j] = arr[j];
+        }
+        var Arr = new Array();
+        var Arr1 = new Array();
+        for (var x = parseInt(x2) + 1; x <= n1; x++) {
+          Arr.push(arr1[x]);
+          Arr1.push(arr[x]);
+        }
+        var trace1 =
+        {
+          x: Ar,
+          y: Ar1,
+          mode: 'markers',
+          marker: {
+            color: colour[2],
+          },
+          line: { shape: 'spline' },
+        };
+        var trace2 =
+        {
+          x: Arr,
+          y: Arr1,
+          mode: 'markers',
+          marker: {
+            color: colour[0],
+          },
+          line: { shape: 'spline' },
+        };
+        var data = [trace1, trace2];
+        var layout = axis(0, n1, colour[1]);
+        Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+    }
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+
+
+    function Binomial_Less(z) {
+      try {
+        Ar = new Array();
+        Ar1 = new Array();
+        for (var j = 0; j <= z - 1; j++) {
+          Ar[j] = arr1[j];
+          Ar1[j] = arr[j];
+        }
+        var trace1 =
+        {
+          x: arr1,
+          y: arr,
+          mode: 'markers',
+          marker: {
+            color: colour[1],
+          },
+          line: { shape: 'spline' },
+        };
+        var trace2 =
+        {
+          x: Ar,
+          y: Ar1,
+          mode: 'markers',
+          marker: {
+            color: colour[0],
+          },
+          line: { shape: 'spline' },
+          name:'P(X<x)',
+        };
+        var data = [trace1, trace2];
+        var layout = axis(0, n1, colour[1]);
+        layout.shapes.type = 'line';
+        for (var i = 0; i < Ar.length; i++) {
+          layout.shapes[i] = {
+            x0: Ar[i],
+            y0: 0,
+            x1: Ar[i],
+            y1: Ar1[i],
+            line: {
+              color: colour[0],
+            }
+          };
+          Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+        }
+      }
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+
+    function Binomial_More(z) {
+      try {
+        var j = parseInt(z);
+        Ar = new Array();
+        Ar1 = new Array();
+        for (var x = j + 1; x <= n1; x++) {
+          Ar.push(arr1[x]);
+          Ar1.push(arr[x]);
+        }
+        var trace1 =
+        {
+          x: arr1,
+          y: arr,
+          mode: 'markers',
+          marker: {
+            color: colour[1],
+          },
+          line: { shape: 'spline' },
+        };
+        var trace2 =
+        {
+          x: Ar,
+          y: Ar1,
+          mode: 'markers',
+          marker: {
+            color: colour[2],
+          },
+          line: { shape: 'spline' },
+          name:'P(X>x)',
+        };
+        var data = [trace1, trace2];
+        var layout = axis(0, j, colour[1])
+        layout.shapes.type = 'line';
+        var q = parseInt(z);
+        for (i = q + 1; i < n1; i++) {
+          layout.shapes[i] = {
+            x0: arr1[i],
+            y0: 0,
+            x1: arr1[i],
+            y1: arr[i],
+            line: {
+              color: colour[2],
+            }
+          }
+        }
+        Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+      }
+
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+
+    function Binomial_Equal(a) {
+      Ar = new Array();
+      Ar1 = new Array();
+      Ar.push(arr1[a]);
+      Ar1.push(arr[a]);
+      var trace1 =
+        {
+          x: arr1,
+          y: arr,
+          mode: 'markers',
+          marker: {
+            color: colour[1],
+          },
+          line: { shape: 'spline' },
+        };
+      var trace2 = {
+        x: Ar,
+        y: Ar1,
+        mode: 'markers',
+        marker: {
+          color: colour[3],
+        },
+        line: { shape: 'spline' },
+        name:'P(X=x)'
+      };
+      var data = [trace1,trace2];
+      var a=parseInt(a);
+      var layout = axis(0, n1, colour[1]);
+      layout.shapes[a] = {
+            x0: arr1[a],
+            y0: 0,
+            x1: arr1[a],
+            y1: arr[a],
+            line: {
+              color: colour[3],
+            }
+          }
+      Plotly.newPlot('myDiv', data, layout, { scrollZoom: true })
+    }
+    Binomial_Histo(1)
+    document.getElementById('form').onsubmit = function (event) {
+      event.preventDefault()
+      Binomial_Histo(2)
+    }
+
+  </script>
+</body>
+
+</html>

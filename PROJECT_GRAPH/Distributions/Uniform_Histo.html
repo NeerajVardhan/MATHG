@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Uniform Distribution</title>
+    <script src="js/math.min.js"></script>
+    <script src="js/plotly-latest.min.js"></script>
+    <script src="js/Calculation.js"></script>
+    <style>
+        input[type=text] {
+            width: 300px;
+        }
+
+        input {
+            padding: 6px;
+        }
+
+        body,
+        html,
+        input {
+            font-family: sans-serif;
+            font-size: 11pt;
+
+        }
+
+        form {
+            margin: 20px 0;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="form">
+        <label>Enter the Parameters</label><br>
+        <label>a=&nbsp;&nbsp;</label>
+        <input type="text" id="a" /><br><br>
+        <label>b=&nbsp;&nbsp;</label>
+        <input type="text" id="b" /><br><br>
+        <input type="button" value="Submit" onclick="Uniform_Cal()" /><br><br>
+    </form>
+    <div id="myDiv"></div>
+    <script>
+        var arr;
+        var arr1;
+        var Ar;
+        var Ar1;
+        var a, b;
+        var answer;
+        var colour = ['red', 'blue', 'green', 'orange'];
+        function Uniform_Cal() {
+            arr = new Array();
+            arr1 = new Array();
+            a = parseInt(document.getElementById('a').value);
+            b = parseInt(document.getElementById('b').value);
+           
+            answer = uniform(b, a);
+            arr1 = [a, b];
+            arr = [answer, answer];
+            Uniform_Histo()
+        }
+        function axis() {
+            var layout = {
+                xaxis: {
+                    gridcolor: "rgb(100,100,100)",
+                    title: "X-Axis",
+                    type: 'linear',
+                    showgrid: true,
+                    showline: true,
+                    showticklabels: true,
+                    tickcolor: "red",
+                    ticks: "outside",
+                    zeroline: true,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 1,
+                    linecolor: '#636363',
+                    linewidth: 1
+                },
+                yaxis: {
+                    gridcolor: "rgb(100,100,100)",
+                    title: "Y-Axis",
+                    type: 'linear',
+                    showgrid: true,
+                    showline: true,
+                    showticklabels: true,
+                    tickcolor: "red",
+                    ticks: "outside",
+                    zeroline: true,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 1,
+                    linecolor: '#636363',
+                    linewidth: 1
+
+                },
+                autosize: false, width: 700, height: 500,
+                margin: { l: 50, r: 50, b: 45, t: 15, pad: 0 },
+                shapes: [] = new Array(),
+            };
+            layout.shapes.type = 'line';
+            for (i = 0; i < 2; i++) {
+                layout.shapes[i] = {
+                    x0: arr1[i],
+                    y0: 0,
+                    x1: arr1[i],
+                    y1: arr[i],
+                    line: {
+                        color: colour
+                    }
+                }
+            }
+            return (layout)
+        }
+        function Uniform_Histo() {
+            try {
+                var trace =
+                {
+                    x: arr1,
+                    y: arr,
+                    mode: 'lines',
+                    line: { shape: 'spline' },
+                    fill: 'tozeroy',
+                };
+                var data = [trace];
+                var layout = axis();
+                Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+            }
+
+            catch (err) {
+                console.error(err)
+                alert(err)
+            }
+        }
+
+
+        Uniform_Histo(1)
+        document.getElementById('form').onsubmit = function (event) {
+            event.preventDefault()
+            Uniform_Histo(2)
+        }
+
+    </script>
+</body>
+
+</html>

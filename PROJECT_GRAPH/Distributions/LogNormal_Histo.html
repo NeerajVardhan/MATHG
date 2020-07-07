@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Log Normal Distribution</title>
+    <script src="js/math.js"></script>
+    <script src="js/plotly-latest.min.js"></script>
+    <script src="js/Calculation.js"></script>
+</head>
+
+<body>
+    <div id="head">
+        <h1 align="center">Log Normal Distribution</h1>
+    </div>
+    <form id="form">
+        <form id="form">
+            <label for="eq">Enter Parameters</label><br><br>
+            <label><img src="pictures/download.jpeg" width="20px" height="20px">=</label><input type="text" id="mu" />
+            <label><img src="pictures/Greek_lc_sigma1.png" width="20px" height="20px">=</label><input type="text"
+                id="s" />
+            <input type="button" value="Submit" onclick="LogNrml_Cal()" /><br><br>
+        </form>
+        <div id='myDiv'></div>
+        <script>
+            var k;
+            var arr;
+            var arr1;
+            function LogNrml_Cal() {
+                mu = parseInt(document.getElementById('mu').value);
+                s = (document.getElementById('s').value);
+                arr = new Array();
+                arr1 = new Array();
+                function fp(x, s) {
+                    return (1 / (x * s * Math.sqrt(2 * Math.PI)))
+                }
+                function sp(x, mu, s) {
+                    //console.log (Math.exp(-[((Math.log(x) - mu) ** 2) / 2 * ((s) ** 2)]))
+                    return (Math.exp(-[((Math.log(x) - mu) ** 2) / 2 * ((s) ** 2)]))
+                }
+                
+                function lognrml(x, mu, s) {
+                    return (fp(x, s) * sp(x, mu, s))
+                }
+                for (var x = 0; x <= 30000; x++) {
+                    arr.push(x);
+                    var y=lognrml(x,mu,s);
+                    if(isNaN(y)){y=0}
+                    arr1.push(y);
+                }//console.log(arr1[0])
+                LogNrml_Histo();
+            }
+            function axis() {
+                var layout = {
+                    xaxis: {
+                        gridcolor: "rgb(100,100,100)",
+                        title: "X-Axis",
+                        range: [0, 9],
+                        type: 'linear',
+                        showgrid: true,
+                        showline: true,
+                        showticklabels: true,
+                        tickcolor: "red",
+                        ticks: "outside",
+                        zeroline: true,
+                        zerolinecolor: '#969696',
+                        zerolinewidth: 6,
+                        linecolor: '#636363',
+                        linewidth: 1
+                    },
+                    yaxis: {
+                        gridcolor: "rgb(100,100,100)",
+                        title: "Y-Axis",
+                        type: 'linear',
+                        showgrid: true,
+                        showline: true,
+                        showticklabels: true,
+                        tickcolor: "red",
+                        ticks: "outside",
+                        zeroline: true,
+                        zerolinecolor: '#969696',
+                        zerolinewidth: 6,
+                        linecolor: '#636363',
+                        linewidth: 1
+
+                    },
+                    autosize: false, width: 700, height: 500,
+                    margin: { l: 50, r: 50, b: 45, t: 15, pad: 0 },
+                };
+                return (layout)
+            }
+
+            function LogNrml_Histo() {
+                try {
+                    var trace =
+                    {
+                        x: arr,
+                        y: arr1,
+                        mode: 'lines',
+                        marker: {
+                            color: 'red',
+                        },
+                        line: { shape: 'spline' },
+                        //fill:'tozeroy',
+                    };
+                    var data = [trace];
+                    var layout = axis();
+                    Plotly.newPlot('myDiv', data, layout,{scrollZoom:true});
+                }
+
+                catch (err) {
+                    console.error(err)
+                    alert(err)
+                }
+            }
+            LogNrml_Histo()
+            document.getElementById('form').onsubmit = function (event) {
+                event.preventDefault()
+                LogNrml_Histo()
+            }   
+        </script>
+</body>
+
+</html>

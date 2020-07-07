@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Exponential Distribution</title>
+    <script src="js/math.min.js"></script>
+    <script src="js/plotly-latest.min.js"></script>
+    <style>
+        input[type=text] {
+            width: 300px;
+        }
+
+        input {
+            padding: 6px;
+        }
+
+        body,
+        html,
+        input {
+            font-family: sans-serif;
+            font-size: 11pt;
+
+        }
+
+        form {
+            margin: 20px 0;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="form">
+        <label>Enter the Parameters</label><br>
+        <label>lamda=&nbsp;&nbsp;</label>
+        <input type="text" id="l" /><br><br>
+        <input type="button" value="Submit" onclick="Exponential_Cal()" /><br><br>
+    </form>
+    <div id="myDiv"></div>
+    <script>
+        var arr;
+        var arr1;
+        var Ar;
+        var Ar1;
+        var lamda;
+        var colour = ['red', 'blue', 'green', 'orange'];
+        function Exponential_Cal() {
+            arr = new Array();
+            arr1 = new Array();
+            lamda = (document.getElementById('l').value);
+            function exponential(l, x) {
+                return (l * (Math.E ** (-l * x)));
+            }
+            for (var i = 0; i <= 10000; i++) {
+                arr1.push(i);
+                arr[i] = exponential(lamda, i);
+            }
+            Exponential_Histo()
+        }
+        function axis() {
+            var layout = {
+                xaxis: {
+                    gridcolor: "rgb(100,100,100)",
+                    title: "X-Axis",
+                    type: 'linear',
+                    showgrid: true,
+                    showline: true,
+                    showticklabels: true,
+                    tickcolor: "red",
+                    ticks: "outside",
+                    zeroline: true,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 1,
+                    linecolor: '#636363',
+                    linewidth: 1
+                },
+                yaxis: {
+                    gridcolor: "rgb(100,100,100)",
+                    title: "Y-Axis",
+                    type: 'linear',
+                    showgrid: true,
+                    showline: true,
+                    showticklabels: true,
+                    tickcolor: "red",
+                    ticks: "outside",
+                    zeroline: true,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 1,
+                    linecolor: '#636363',
+                    linewidth: 1
+
+                },
+                autosize: false, width: 700, height: 500,
+                margin: { l: 50, r: 50, b: 45, t: 15, pad: 0 },
+            };
+            return (layout)
+        }
+        function Exponential_Histo() {
+            try {
+                var trace =
+                {
+                    x: arr1,
+                    y: arr,
+                    mode: 'lines',
+                    /*marker: {
+                        color: colour[1],
+                    },*/
+                    line: { shape: 'spline' },
+                };
+                var data = [trace];
+                var layout = axis();
+                Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+            }
+
+            catch (err) {
+                console.error(err)
+                alert(err)
+            }
+        }
+
+        Exponential_Histo(1)
+        document.getElementById('form').onsubmit = function (event) {
+            event.preventDefault()
+            Exponential_Histo(2)
+        }
+
+    </script>
+</body>
+
+</html>

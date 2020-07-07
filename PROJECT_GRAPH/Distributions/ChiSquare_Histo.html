@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>ChiSquare Distribution</title>
+  <script src="js/math.min.js"></script>
+  <script src="js/math.js"></script>
+  <script src="js/plotly-latest.min.js"></script>
+  <script src="js/Calculation.js"></script>
+</head>
+
+<body>
+  <div id="head">
+    <h1 align="center">ChiSquare Distribution</h1>
+  </div>
+  <form id="form">
+    <label for="eq">Enter Parameters</label><br><br>
+    <label>k=&nbsp;&nbsp;</label>
+    <input type="text" id="k" /><br><br>
+    <input type="button" value="Submit"
+      onclick="Chisqr_Cal()" /><br><br>
+  </form>
+  <div id='myDiv'></div>
+  <script>
+    var k;   
+    var arr;
+    var arr1;   
+    function Chisqr_Cal() {
+      k = parseInt(document.getElementById('k').value); 
+      arr = new Array();
+      arr1 = new Array();
+      function fp(k)
+    {
+        return(1/((2**(k/2))*math.gamma(k/2)))
+    }
+
+    function sp(x,k)
+    {
+        return(x**((k/2)-1)*Math.E**(-x/2))
+    }
+
+    function chisqr(x,k)
+    {
+        return(fp(k)*sp(x,k)) 
+    }
+    //chisqr(1)
+        var j;
+        if(k==1){
+            j=1
+        }
+        else{j=0}
+       for(var x=j;x<=3000;x++){
+        arr.push(x);
+        arr1.push(chisqr(x,k));
+      }
+
+      Chisqr_Histo();
+
+    }
+    function axis() {
+      var layout = {
+        xaxis: {
+          gridcolor: "rgb(100,100,100)",
+          title: "X-Axis",
+          range: [0,9],
+          type: 'linear',
+          showgrid: true,
+          showline: true,
+          showticklabels: true,
+          tickcolor: "red",
+          ticks: "outside",
+          zeroline: true,
+          zerolinecolor: '#969696',
+          zerolinewidth: 6,
+          linecolor: '#636363',
+          linewidth: 1
+        },
+        yaxis: {
+          gridcolor: "rgb(100,100,100)",
+          title: "Y-Axis",
+          type: 'linear',
+          showgrid: true,
+          showline: true,
+          showticklabels: true,
+          tickcolor: "red",
+          ticks: "outside",
+          zeroline: true,
+          zerolinecolor: '#969696',
+          zerolinewidth: 6,
+          linecolor: '#636363',
+          linewidth: 1
+
+        },
+        autosize: false, width: 700, height: 500,
+        margin: { l: 50, r: 50, b: 45, t: 15, pad: 0 },
+      };
+      return (layout)
+    }
+
+    function Chisqr_Histo() {
+      try {
+        var trace =
+        {
+          x: arr,
+          y: arr1,
+          mode: 'lines',
+          marker: {
+            color: 'red',
+          },
+          line: { shape: 'spline' },
+          //fill:'tozeroy',
+        };
+        var data = [trace];
+        var layout = axis();
+        Plotly.newPlot('myDiv', data, layout);
+      }
+
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+    Chisqr_Histo()
+    document.getElementById('form').onsubmit = function (event) {
+      event.preventDefault()
+      Chisqr_Histo()
+    }   
+  </script>
+</body>
+
+</html>

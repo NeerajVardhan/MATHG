@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Gamma Distribution</title>
+    <script src="js/math.js"></script>
+    <script src="js/plotly-latest.min.js"></script>
+    <script src="js/Calculation.js"></script>
+</head>
+
+<body>
+    <div id="head">
+        <h1 align="center">Gamma Distribution</h1>
+    </div>
+    <form id="form">
+        <label for="eq">Enter Parameters</label><br><br>
+        <label>k=&nbsp;&nbsp;</label>
+        <input type="text" id="k" />
+        <label>theta=&nbsp;&nbsp;</label>
+        <input type="text" id="t" /><br><br>
+        <input type="button" value="Submit" onclick="Gamma_Cal()" /><br><br>
+    </form>
+    <div id='myDiv'></div>
+    <script>
+        var theta;
+        var k;
+        var q, b, c;
+        var arr;
+        var arr1;
+        var r1, r2, p;
+        var Ar, Ar1;
+        function Gamma_Cal() {
+            theta = (document.getElementById('t').value);
+            k = (document.getElementById('k').value);
+            arr = new Array();
+            arr1 = new Array();
+            for (var i = 0; i <= 10000; i++) {
+                arr.push(i);
+                arr1.push(gamma(i, k, theta));
+            }
+            Gamma_Histo();
+        }
+        function axis() {
+            var layout = {
+                xaxis: {
+                    gridcolor: "rgb(100,100,100)",
+                    title: "X-Axis",
+                    range: [0, 15],
+                    type: 'linear',
+                    showgrid: true,
+                    showline: true,
+                    showticklabels: true,
+                    tickcolor: "red",
+                    ticks: "outside",
+                    zeroline: true,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 6,
+                    linecolor: '#636363',
+                    linewidth: 1
+                },
+                yaxis: {
+                    gridcolor: "rgb(100,100,100)",
+                    title: "Y-Axis",
+                    type: 'linear',
+                    showgrid: true,
+                    showline: true,
+                    showticklabels: true,
+                    tickcolor: "red",
+                    ticks: "outside",
+                    zeroline: true,
+                    zerolinecolor: '#969696',
+                    zerolinewidth: 6,
+                    linecolor: '#636363',
+                    linewidth: 1
+
+                },
+                autosize: false, width: 700, height: 500,
+                margin: { l: 50, r: 50, b: 45, t: 15, pad: 0 },
+                /*shapes:[
+                  {
+                    type:'line',
+                    line:{color:'blue'},
+                    x0:arr[r1],
+                    y0:0,
+                    x1:arr[r1],
+                    y1:arr1[r1],
+                  },
+                  {
+                    type:'line',
+                    line:{color:'blue'},
+                    x0:arr[r2],
+                    y0:0,
+                    x1:arr[r2],
+                    y1:arr1[r2],
+                  }
+                ]*/
+
+            };
+            return (layout)
+        }
+
+        function Gamma_Histo() {
+            try {
+                var trace =
+                {
+                    x: arr,
+                    y: arr1,
+                    mode: 'lines',
+                    marker: {
+                        color: 'red',
+                    },
+                    line: { shape: 'spline' },
+                };
+                var data = [trace];
+                var layout = axis();
+                Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+            }
+
+            catch (err) {
+                console.error(err)
+                alert(err)
+            }
+        }
+       
+        Gamma_Histo()
+        document.getElementById('form').onsubmit = function (event) {
+            event.preventDefault()
+            Gamma_Histo()
+        }   
+    </script>
+</body>
+
+</html>

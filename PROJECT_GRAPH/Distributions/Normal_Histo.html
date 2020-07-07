@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Normal Distribution</title>
+  <script src="js/math.min.js"></script>
+  <script src="js/plotly-latest.min.js"></script>
+  <script src="js/Calculation.js"></script>
+</head>
+
+<body>
+  <div id="head">
+    <h1 align="center">Normal Distribution</h1>
+  </div>
+  <form id="form">
+    <label for="eq">Enter Parameters</label><br><br>
+    <label><img src="pictures/download.jpeg" width="20px" height="20px">=</label><input type="text" id="mu" />
+    <label><img src="pictures/Greek_lc_sigma1.png" width="20px" height="20px">=</label><input type="text" id="s" />
+    <input type="button" value="Submit" onclick="Normal_Cal()" /><br><br>
+    <label>x=&nbsp;&nbsp;</label>
+    <input type="text" id="x" />
+    <input type="button" value="Click Here for Graph of P(X<x)"
+      onclick="Normal_Less(document.getElementById('x').value)" />
+    <input type="button" value="Click Here for Graph of P(X>x)"
+      onclick="Normal_More(document.getElementById('x').value)" /><br><br>
+  </form>
+  <div id='myDiv'></div>
+  <script>
+    var mu;
+    var s;
+    var arr;
+    var arr1;
+    var x;
+    var b;
+    var c;
+    var r1,r2,p;
+    var Ar,Ar1;
+    function Normal_Cal() {
+      mu = parseInt(document.getElementById('mu').value);
+      s = parseInt(document.getElementById('s').value);
+      arr = new Array();
+      arr1 = new Array();
+      x = mu - 10000;
+      b = mu + 10000;
+      c = b - x;
+      for (var i = x; i <= b; i++) {
+        arr.push(i);
+        arr1.push(normal(i, mu, s));
+      }
+      for(p=0;p<arr.length;p++)
+      {
+        if(arr[p]==mu)
+        {
+          break;
+        }
+        else{
+          continue;
+        }
+      }
+      r1=p-s;
+      r2=p+s;
+      Normal_Histo();
+    }
+    function axis(j) {
+      var layout = {
+        xaxis: {
+          gridcolor: "rgb(100,100,100)",
+          title: "X-Axis",
+          range: [mu-s-5,mu+s+5],
+          type: 'linear',
+          showgrid: true,
+          showline: true,
+          showticklabels: true,
+          tickcolor: "red",
+          ticks: "outside",
+          zeroline: true,
+          zerolinecolor: '#969696',
+          zerolinewidth: 6,
+          linecolor: '#636363',
+          linewidth: 1
+        },
+        yaxis: {
+          gridcolor: "rgb(100,100,100)",
+          title: "Y-Axis",
+          type: 'linear',
+          showgrid: true,
+          showline: true,
+          showticklabels: true,
+          tickcolor: "red",
+          ticks: "outside",
+          zeroline: true,
+          zerolinecolor: '#969696',
+          zerolinewidth: 6,
+          linecolor: '#636363',
+          linewidth: 1
+
+        },
+        autosize: false, width: 700, height: 500,
+        margin: { l: 50, r: 50, b: 45, t: 15, pad: 0 },
+        shapes:[
+          {
+            type:'line',
+            line:{color:'blue'},
+            x0:arr[r1],
+            y0:0,
+            x1:arr[r1],
+            y1:arr1[r1],
+          },
+          {
+            type:'line',
+            line:{color:'blue'},
+            x0:arr[r2],
+            y0:0,
+            x1:arr[r2],
+            y1:arr1[r2],
+          }
+        ]
+
+      };
+      return (layout)
+    }
+
+    function Normal_Histo() {
+      try {
+        var trace =
+        {
+          x: arr,
+          y: arr1,
+          mode: 'lines',
+          marker: {
+            color: 'red',
+          },
+          line: { shape: 'spline' },
+          fill:'tozeroy',
+        };
+        var data = [trace];
+        var layout = axis(0, c);
+        Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+      }
+
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+    function Normal_Less(z)
+    {
+      var q;
+      Ar=new Array();
+      Ar1=new Array()
+      try{
+        for(q=x;q<arr.length;q++){
+          if(arr[q]==parseInt(z)){
+            break;
+          }
+          else{
+            continue;
+          }
+        }
+        for(var i=x;i<=q;i++){
+         Ar[i]=arr[i]
+         Ar1[i]=arr1[i]
+        }
+        var trace1 =
+        {
+          x: arr,
+          y: arr1,
+          mode: 'lines',
+          marker: {
+            color: 'red',
+          },
+          line: { shape: 'spline' },
+          fill:'tozeroy',
+        };
+        var trace2={
+          x:Ar,
+          y:Ar1,
+          mode:'line',
+          marker: {
+            color: 'green',
+          },
+          line: { shape: 'spline' },
+          fill:'tozeroy',
+          name:'P(X<x)'
+        };
+        var data = [trace1,trace2];
+        var layout = axis(0,c);
+        Plotly.newPlot('myDiv', data, layout, { scrollZoom: true });
+        }
+
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+      }
+    
+    function Normal_More(z){
+      try{
+        var q;
+        Ar=new Array();
+        Ar1=new Array();
+        for(q=b;q<arr.length;q--){
+          if(arr[q]==parseInt(z)){
+            break;
+          }
+          else{
+            continue;
+          }
+        }
+        for(var i=q;i<=c;i++){
+         Ar[i]=arr[i]
+         Ar1[i]=arr1[i]
+        }
+        var trace1={
+          x:arr,
+          y:arr1,
+          mode:'lines',
+          marker:{
+            color:'red',
+          },
+          line:{shape:'spline'},
+          fill:'tozeroy'
+        }
+        var trace2={
+          x:Ar,
+          y:Ar1,
+          mode:'lines',
+          marker:{
+            color:'blue',
+          },
+          line: {shape:'spline'},
+          fill:'tozeroy',
+          name:'P(X>x)'
+        };
+        var data=[trace1,trace2];
+        var layout= axis(0,c);
+        Plotly.newPlot('myDiv',data,layout,{scrollZoom:true});
+      }
+      catch (err) {
+        console.error(err)
+        alert(err)
+      }
+    }
+    Normal_Histo()
+    document.getElementById('form').onsubmit = function (event) {
+      event.preventDefault()
+      Normal_Histo()
+    }   
+  </script>
+</body>
+
+</html>
